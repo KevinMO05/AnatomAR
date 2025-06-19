@@ -22,7 +22,7 @@ const Viewer = ({ modelPath, autoRotate = true }) => {
       0.1,
       1000
     );
-    camera.position.set(0, 0, 5);
+    camera.position.set(-5, 15, 5);
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(mount.clientWidth, mount.clientHeight);
@@ -40,7 +40,7 @@ const Viewer = ({ modelPath, autoRotate = true }) => {
 
     scene.add(new THREE.AmbientLight(0xffffff, 0.6));
     const directional = new THREE.DirectionalLight(0xffffff, 0.8);
-    directional.position.set(5, 5, 5);
+    directional.position.set(0, 0, 5);
     scene.add(directional);
 
     const loader = new GLTFLoader();
@@ -56,7 +56,7 @@ const Viewer = ({ modelPath, autoRotate = true }) => {
         const center = box.getCenter(new THREE.Vector3());
         model.position.sub(center);
 
-        model.scale.set(1.5, 1.5, 1.5);
+        model.scale.set(1.4, 1.4, 1.4);
         scene.add(model);
 
         // Animaciones
@@ -64,6 +64,7 @@ const Viewer = ({ modelPath, autoRotate = true }) => {
           const mixer = new THREE.AnimationMixer(model);
           const action = mixer.clipAction(gltf.animations[0]);
           action.play();
+          action.timeScale = 0.8; 
           mixerRef.current = mixer;
         }
       },
@@ -132,7 +133,7 @@ const SkullViewer3D = ({ selectedBone, bones }) => {
     <div className="flex flex-col gap-6">
       {/* Cráneo completo */}
       <div className="relative h-[400px] rounded-lg border border-gray-200 bg-white shadow-inner overflow-hidden">
-        <Viewer modelPath="/models/skull.glb" autoRotate={true} />
+        <Viewer modelPath="/models/skull_fragmented.glb" autoRotate={true} />
 
         <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm rounded-lg px-3 py-2 text-xs text-gray-600">
           <div className="flex items-center space-x-2">
