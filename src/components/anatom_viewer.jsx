@@ -1,23 +1,52 @@
 import React, { useState } from 'react';
-import SkullViewer3D from './skull_viewer_3d';
+
+const SketchfabViewer = ({ embedUrl, title, className = "" }) => {
+  return (
+    <div className={`relative rounded-lg border border-gray-200 bg-white shadow-inner overflow-hidden ${className}`}>
+      <iframe
+        title={title}
+        frameBorder="0"
+        allowFullScreen
+        mozallowfullscreen="true"
+        webkitallowfullscreen="true"
+        allow="autoplay; fullscreen; xr-spatial-tracking"
+        xr-spatial-tracking
+        execution-while-out-of-viewport
+        execution-while-not-rendered
+        web-share
+        width="100%"
+        height="100%"
+        src={embedUrl}
+        className="w-full h-full"
+      />
+    </div>
+  );
+};
 
 const AnatomyViewer = () => {
   const [selectedBone, setSelectedBone] = useState('frontal');
 
+  // URLs de embed de Sketchfab para cada hueso
+  const sketchfabEmbeds = {
+    skull: "https://sketchfab.com/models/baf6ac7b781a46218dca2b59dee58817/embed?autostart=1", // Reemplaza con tu URL
+    frontal: "https://sketchfab.com/models/b8a462158501416dbde8f924067d325f/embed?autostart=1",
+    parietal: "https://sketchfab.com/models/a1253109d8a1474bbbeed716227ba586/embed?autostart=1",
+    temporal: "https://sketchfab.com/models/8dec765f703d45fbb14460bbaa106c1c/embed?autostart=1",
+    occipital: "https://sketchfab.com/models/f7b9dd2827a14e9999b01d2aeb794c12/embed?autostart=1",
+    maxilla: "https://sketchfab.com/models/cbcbc30694c84f1c9f3ecfc57a635020/embed?autostart=1",
+    mandible: "https://sketchfab.com/models/1d3eb1b070a44aa88e576fa5c0544c8d/embed?autostart=1",
+    zygomatic: "https://sketchfab.com/models/2f28f3a686d84b69b3a36b9e1cf781b4/embed?autostart=1",
+  };
+
   // Datos de los huesos del cráneo
   const skullBones = [
-    { id: 'frontal', name: 'Frontal', color: 0xff6b6b },
-    { id: 'parietal', name: 'Parietal', color: 0x4ecdc4 },
-    { id: 'temporal', name: 'Temporal', color: 0x45b7d1 },
-    { id: 'occipital', name: 'Occipital', color: 0x96ceb4 },
-    { id: 'sphenoid', name: 'Esfenoides', color: 0xffeaa7 },
-    { id: 'ethmoid', name: 'Etmoides', color: 0xdda0dd },
-    { id: 'nasal', name: 'Nasal', color: 0x98d8c8 },
-    { id: 'maxilla', name: 'Maxilar', color: 0xf7dc6f },
-    { id: 'mandible', name: 'Mandíbula', color: 0xbb8fce },
-    { id: 'zygomatic', name: 'Cigomático', color: 0x85c1e9 },
-    { id: 'lacrimal', name: 'Lagrimal', color: 0xf8c471 },
-    { id: 'palatine', name: 'Palatino', color: 0x82e0aa }
+    { id: 'frontal', name: 'Frontal', color: '#ff6b6b' },
+    { id: 'parietal', name: 'Parietal', color: '#4ecdc4' },
+    { id: 'temporal', name: 'Temporal', color: '#45b7d1' },
+    { id: 'occipital', name: 'Occipital', color: '#96ceb4' },
+    { id: 'maxilla', name: 'Maxilar', color: '#f7dc6f' },
+    { id: 'mandible', name: 'Mandíbula', color: '#bb8fce' },
+    { id: 'zygomatic', name: 'Cigomático', color: '#85c1e9' },
   ];
 
   const boneDescriptions = {
@@ -25,19 +54,16 @@ const AnatomyViewer = () => {
     parietal: "Los huesos parietales forman la mayor parte de los lados y la parte superior del cráneo.",
     temporal: "El hueso temporal se encuentra en los lados del cráneo y contiene el oído interno.",
     occipital: "El hueso occipital forma la parte posterior e inferior del cráneo.",
-    sphenoid: "El esfenoides es un hueso complejo que forma parte de la base del cráneo.",
-    ethmoid: "El etmoides forma parte de la cavidad nasal y las órbitas oculares.",
-    nasal: "Los huesos nasales forman el puente de la nariz.",
     maxilla: "El maxilar forma la mandíbula superior y sostiene los dientes superiores.",
     mandible: "La mandíbula es el hueso móvil de la mandíbula inferior.",
     zygomatic: "El cigomático forma el pómulo y parte de la órbita ocular.",
-    lacrimal: "El hueso lagrimal es el más pequeño del cráneo, ubicado en la órbita.",
-    palatine: "El palatino forma parte del paladar duro y la cavidad nasal."
   };
 
   const handleChatWithAI = () => {
     alert('Funcionalidad de chat con IA - Por implementar');
   };
+
+  const selectedBoneData = skullBones.find(bone => bone.id === selectedBone);
 
   return (
     <section className="py-16 bg-white">
@@ -47,7 +73,7 @@ const AnatomyViewer = () => {
             Explorador de Anatomía Humana
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Descubre cada organo/sistema del cuerpo humano con nuestro visualizador 3D interactivo
+            Descubre cada órgano/sistema del cuerpo humano con nuestro visualizador 3D interactivo
           </p>
         </div>
 
@@ -70,7 +96,7 @@ const AnatomyViewer = () => {
               {/* Información del hueso seleccionado */}
               <div className="bg-white rounded-lg p-4 border-l-4 border-blue-500">
                 <h4 className="text-lg font-semibold text-gray-900 mb-2">
-                  {skullBones.find(bone => bone.id === selectedBone)?.name}
+                  {selectedBoneData?.name}
                 </h4>
                 <p className="text-gray-600 text-sm">
                   {boneDescriptions[selectedBone]}
@@ -94,7 +120,13 @@ const AnatomyViewer = () => {
                         : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
                     }`}
                   >
-                    {bone.name}
+                    <div className="flex items-center space-x-2">
+                      <div
+                        className="w-3 h-3 rounded-full"
+                        style={{ backgroundColor: bone.color }}
+                      />
+                      <span>{bone.name}</span>
+                    </div>
                   </button>
                 ))}
               </div>
@@ -124,25 +156,52 @@ const AnatomyViewer = () => {
             </div>
           </div>
 
-          {/* Visualizador 3D - Derecha */}
-          <div className="bg-gray-50 rounded-xl p-6">
-            <div className="flex items-center justify-between mb-4">
-              <h4 className="text-lg font-semibold text-gray-900">
-                Vista 3D - {skullBones.find(bone => bone.id === selectedBone)?.name}
-              </h4>
-              <div className="flex items-center space-x-2 text-sm text-gray-500">
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                </svg>
-                <span>Arrastra para rotar</span>
-              </div>
-            </div>
+          {/* Visualizadores 3D - Derecha */}
+          <div className="space-y-6">
             
-            <SkullViewer3D 
-              selectedBone={selectedBone}
-              bones={skullBones}
-            />
+            {/* Cráneo completo */}
+            <div className="bg-gray-50 rounded-xl p-6">
+              <div className="flex items-center justify-between mb-4">
+                <h4 className="text-lg font-semibold text-gray-900">
+                  Cráneo Completo
+                </h4>
+                <div className="flex items-center space-x-2 text-sm text-gray-500">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                  </svg>
+                  <span>Interactivo</span>
+                </div>
+              </div>
+              
+              <SketchfabViewer
+                embedUrl={sketchfabEmbeds.skull}
+                title="Cráneo Humano Completo"
+                className="h-[350px]"
+              />
+            </div>
+
+            {/* Hueso seleccionado */}
+            <div className="bg-gray-50 rounded-xl p-6">
+              <div className="flex items-center justify-between mb-4">
+                <h4 className="text-lg font-semibold text-gray-900">
+                  {selectedBoneData?.name}
+                </h4>
+                <div className="flex items-center space-x-2">
+                  <div
+                    className="w-3 h-3 rounded-full"
+                    style={{ backgroundColor: selectedBoneData?.color }}
+                  />
+                  <span className="text-sm text-gray-500">Hueso individual</span>
+                </div>
+              </div>
+              
+              <SketchfabViewer
+                embedUrl={sketchfabEmbeds[selectedBone]}
+                title={`Hueso ${selectedBoneData?.name}`}
+                className="h-[350px]"
+              />
+            </div>
           </div>
         </div>
       </div>
