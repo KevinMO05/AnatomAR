@@ -4,7 +4,7 @@ import { Send, Bot, User, Loader2, X } from "lucide-react";
 const ChatBot = ({ onClose }) => {
   // Configuración estática - Reemplaza con tu API Key real
   const API_KEY = "AIzaSyAW90KhvuWBvB0D80W-tP-sffC1CW-vZrM";
-  const BOT_AVATAR = "/public/anatom.svg"; // o la ruta donde tengas tu imagen
+  const BOT_AVATAR = "/anatom.svg"; // o la ruta donde tengas tu imagen
 
   // Prompt del sistema que define cómo actúa el bot
   const SYSTEM_PROMPT = `Eres Anatom, un chatbot educativo especializado en anatomía humana. Tu tarea es enseñar de forma clara, respetuosa y amigable, usando un lenguaje simple y apropiado para niños de educación primaria. Responde solo preguntas relacionadas con el cuerpo humano y la anatomía. Si alguien hace preguntas que no tienen que ver con la anatomía humana o que no son apropiadas para niños, responde amablemente que no puedes hablar de ese tema porque estás diseñado solo para enseñar sobre el cuerpo humano. No des consejos médicos.`;
