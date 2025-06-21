@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import ChatBot from './chatbot';
 
 const SketchfabViewer = ({ embedUrl, title, className = "" }) => {
   return (
@@ -25,6 +26,7 @@ const SketchfabViewer = ({ embedUrl, title, className = "" }) => {
 
 const AnatomyViewer = () => {
   const [selectedBone, setSelectedBone] = useState('frontal');
+  const [showChatBot, setShowChatBot] = useState(false);
 
   // URLs de embed de Sketchfab para cada hueso
   const sketchfabEmbeds = {
@@ -60,7 +62,11 @@ const AnatomyViewer = () => {
   };
 
   const handleChatWithAI = () => {
-    alert('Funcionalidad de chat con IA - Por implementar');
+    setShowChatBot(true);
+  };
+
+  const handleCloseChatBot = () => {
+    setShowChatBot(false);
   };
 
   const selectedBoneData = skullBones.find(bone => bone.id === selectedBone);
@@ -109,7 +115,7 @@ const AnatomyViewer = () => {
               <h4 className="text-lg font-semibold text-gray-900 mb-4">
                 Huesos del Cráneo
               </h4>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
                 {skullBones.map((bone) => (
                   <button
                     key={bone.id}
@@ -133,27 +139,31 @@ const AnatomyViewer = () => {
             </div>
 
             {/* Botón para chatear con IA */}
-            <div className="bg-gradient-to-r from-purple-500 to-blue-600 rounded-xl p-6 text-white">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h4 className="text-lg font-semibold mb-2">
-                    ¿Tienes preguntas?
-                  </h4>
-                  <p className="text-sm opacity-90">
-                    Chatea con nuestra IA especializada en anatomía
-                  </p>
+            {!showChatBot ? (
+              <div className="bg-gradient-to-r from-purple-500 to-blue-600 rounded-xl p-6 text-white">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h4 className="text-lg font-semibold mb-2">
+                      ¿Tienes preguntas?
+                    </h4>
+                    <p className="text-sm opacity-90">
+                      Chatea con nuestra IA especializada en anatomía
+                    </p>
+                  </div>
+                  <button
+                    onClick={handleChatWithAI}
+                    className="bg-white text-purple-600 px-6 py-2 rounded-lg font-semibold hover:bg-gray-100 transition-colors duration-200 flex items-center space-x-2"
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                    </svg>
+                    <span>Chatear</span>
+                  </button>
                 </div>
-                <button
-                  onClick={handleChatWithAI}
-                  className="bg-white text-purple-600 px-6 py-2 rounded-lg font-semibold hover:bg-gray-100 transition-colors duration-200 flex items-center space-x-2"
-                >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                  </svg>
-                  <span>Chatear</span>
-                </button>
               </div>
-            </div>
+            ) : (
+              <ChatBot onClose={handleCloseChatBot} />
+            )}
           </div>
 
           {/* Visualizadores 3D - Derecha */}
